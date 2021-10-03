@@ -1,0 +1,130 @@
+1.  Create
+    i. View (student_info) for student table(exp no:1) containing studentNo, studentName, department, address
+    ii. View (student_mark) for student table(exp no:1)  containing studentNo, studentName, maths, physics, chemistry, cProgramming.
+    iii. Display the studentNo, studentName, totalMarks, address from student_info view and student_mark view without referring student table.
+    iv. Create a view (emp_dept) for exp no:3  containing employee name and department name. (NULL values are expected in the department name field for the employees having invalid department numbers).
+    v. Find the name of employees having invalid department numbers by referring the emp_dept view.
+
+Student
+
+studentNo studentName maths physics chemistry cProgramming department address
+100 Hari 50 60 45 75 CSE Kasaragod
+101 Devi 60 55 78 40 CSE Kasaragod
+102 Sam 45 77 88 45 IT Kannur
+103 SreeHari 90 75 77 60 IT Calicut
+104 Rani 91 98 89 52 ECE Kannur
+105 Raj 88 77 67 48 CSE Palakkad
+
+ANSWER
+------
+
+create table student(
+studentNo int(4) primary key,
+studentName varchar(20) NOT NULL,
+maths int,
+physics int,
+chemistry int,
+cProgramming int,
+department varchar(3),
+address varchar(50)
+);
+
+insert into student values(100, "Hari", 50, 60, 45, 75, "CSE", "Kasaragod"),
+(101, "Devi", 60, 55, 78, 40, "CSE", "Kasaragod"),
+(102, "Sam", 45, 77, 88, 45, "IT", "Kannur"),
+(103, "SreeHari", 90, 75, 77, 60, "IT", "Calicut"),
+(104, "Rani", 91, 98, 89, 52, "ECE", "Kannur"),
+(105, "Raj", 88, 77, 67, 48, "CSE", "Palakkad");
+
+i. Create view(student_info) for student table(Exp-1) containing studentNo, studentName, department, address
+
+* CREATE VIEW student_info AS SELECT studentNo, studentName, department, address FROM student;
+
++-----------+-------------+------------+-----------+
+| studentNo | studentName | department | address   |
++-----------+-------------+------------+-----------+
+|       100 | Hari        | CSE        | Kasaragod |
+|       101 | Devi        | CSE        | Kasaragod |
+|       102 | Sam         | IT         | Kannur    |
+|       103 | SreeHari    | IT         | Calicut   |
+|       104 | Rani        | ECE        | Kannur    |
+|       105 | Raj         | CSE        | Palakkad  |
++-----------+-------------+------------+-----------+
+
+
+ii. Create view(student_mark) for student table containing studetNo, studentName, maths, physics, chemistry, cProgramming.
+
+* CREATE VIEW student_mark AS SELECT studentNo, studentName, maths, physics, chemistry, cProgramming FROM student;
+
++-----------+-------------+-------+---------+-----------+--------------+
+| studentNo | studentName | maths | physics | chemistry | cProgramming |
++-----------+-------------+-------+---------+-----------+--------------+
+|       100 | Hari        |    50 |      60 |        45 |           75 |
+|       101 | Devi        |    60 |      55 |        78 |           40 |
+|       102 | Sam         |    45 |      77 |        88 |           45 |
+|       103 | SreeHari    |    90 |      75 |        77 |           60 |
+|       104 | Rani        |    91 |      98 |        89 |           52 |
+|       105 | Raj         |    88 |      77 |        67 |           48 |
++-----------+-------------+-------+---------+-----------+--------------+
+
+iii. Display studentNo, studentName, totalMarks, address from student_info view and student_mark view without referring student table
+
+* SELECT student_info.studentNo, student_info.studentName, (maths + physics + chemistry + cProgramming) AS totalMarks, address
+FROM student_info, student_mark
+WHERE student_info.studentNo = student_mark.studentNo;
+
++-----------+-------------+------------+-----------+
+| studentNo | studentName | totalMarks | address   |
++-----------+-------------+------------+-----------+
+|       100 | Hari        |        230 | Kasaragod |
+|       101 | Devi        |        233 | Kasaragod |
+|       102 | Sam         |        255 | Kannur    |
+|       103 | SreeHari    |        302 | Calicut   |
+|       104 | Rani        |        330 | Kannur    |
+|       105 | Raj         |        280 | Palakkad  |
++-----------+-------------+------------+-----------+
+
+
+iv. Create a view(emp_debt) for ExpNo-3 containing employee name and department name. (NULL values are expected in the department name field for the employees having invalid department numbers)
+
+Exp No - 3 Table
+----------------
+DEPT
+----
++--------+-------------+--------------+
+| deptNO | deptName    | deptLocation |
++--------+-------------+--------------+
+|   1001 | HR          | Calicut      |
+|   1002 | Marketing   | Cochin       |
+|   1003 | Sales       | Trivandrum   |
+|   1004 | Testing     | Bangalore    |
+|   1005 | Development | Bangalore    |
++--------+-------------+--------------+
+
+EMP
+---
++-------+---------+--------+--------+
+| empId | empName | deptNo | salary |
++-------+---------+--------+--------+
+|  2001 | Hari    |   1006 |  30000 |
+|  2002 | Devi    |   1002 |  40000 |
+|  2003 | Gupta   |   1003 |  60000 |
+|  2004 | Ravi    |   1004 |  60000 |
+|  2005 | Rani    |   1007 |  70000 |
+|  2006 | John    |   1003 |  48000 |
++-------+---------+--------+--------+
+
+
+
+
+* CREATE VIEW emp_debt AS
+SELECT deptName, empName
+FROM emp, dept
+WHERE ;
+
+
+
+v. Find the name of employees having invalid department numbers by referring the emp_debt view.
+
+
+

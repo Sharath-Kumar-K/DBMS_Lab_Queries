@@ -1,0 +1,108 @@
+1. Write the SQL Query (1) (i.e. Display the employee name along with their department name (no need to display the employees with invalid department details) )
+
+select empName, dept.deptName from emp INNER JOIN dept ON emp.deptNo = dept.deptNO;
+
++---------+-----------+
+| empName | deptName  |
++---------+-----------+
+| Devi    | Marketing |
+| Gupta   | Sales     |
+| Ravi    | Testing   |
+| John    | Sales     |
++---------+-----------+
+
+2. Write the SQL Query (2) [i.e. There are some invalid department numbers (present in employee table but are not existing in department table), display all employee names (along employee id and their department number) part of such invalid department numbers . ] 
+
+select empId, empName, deptNo from emp where deptNo NOT IN (select deptNO from dept);
+
++-------+---------+--------+
+| empId | empName | deptNo |
++-------+---------+--------+
+|  2001 | Hari    |   1006 |
+|  2005 | Rani    |   1007 |
++-------+---------+--------+
+
+3. Write the SQL Query to Display all the department numbers available with the department and employee tables avoiding duplicates, in ascending order of the department number
+
+(select deptNo from emp) UNION (select deptNO from dept) order by deptNo;
+
++--------+
+| deptNo |
++--------+
+|   1001 |
+|   1002 |
+|   1003 |
+|   1004 |
+|   1005 |
+|   1006 |
+|   1007 |
++--------+
+
+4. Write the SQL Query (4) [i.e. Display department numbers and name of all the departments where no employee exists.] 
+
+select deptName, deptNO from dept where deptNO NOT IN (select deptNo from emp);
+
++-------------+--------+
+| deptName    | deptNO |
++-------------+--------+
+| HR          |   1001 |
+| Development |   1005 |
++-------------+--------+
+
+5. Write SQL query (5) [i.e. Display department number, employee id and employee name of employees working at location Cochin]
+
+select deptno, empId, empName from emp where deptNo IN (select deptNO from dept where deptLocation = 'Cochin');
+
++--------+-------+---------+
+| deptno | empId | empName |
++--------+-------+---------+
+|   1002 |  2002 | Devi    |
++--------+-------+---------+
+
+6. Write the SQL Query to (6) [i.e. Display the details of those who draw the salary greater than the average salary of employee’s from sales department] 
+
+select * from emp where salary > (select avg(salary) from emp where deptNo = (select deptNO from dept where deptName = '
+sales'));
+
++-------+---------+--------+--------+
+| empId | empName | deptNo | salary |
++-------+---------+--------+--------+
+|  2003 | Gupta   |   1003 |  50000 |
+|  2004 | Ravi    |   1004 |  60000 |
+|  2005 | Rani    |   1007 |  70000 |
++-------+---------+--------+--------+
+
+7. Write SQL Query (7) [i.e. The names of employees whose salary is greater than the salary of all the employees in department 1003 ] 
+
+select empName from emp where salary > (select max(salary) from emp where deptNo = 1003);
+
++---------+
+| empName |
++---------+
+| Ravi    |
+| Rani    |
++---------+
+
+8. Execute Query (7) [i.e. The names of employees whose salary is greater than the salary of all the employees in department 1003 ]. Count the number of rows obtained in the output
+
+2
+
+9. Write SQL Query to Give all employees in the 'Sales' department a 15% raise in salary
+
+update emp set salary = (salary + (salary * (15/100))) where deptNo = (select distinct deptNo from dept where deptName = 'Sales');
+
++-------+---------+--------+--------+
+| empId | empName | deptNo | salary |
++-------+---------+--------+--------+
+|  2001 | Hari    |   1006 |  30000 |
+|  2002 | Devi    |   1002 |  40000 |
+|  2003 | Gupta   |   1003 |  69000 |
+|  2004 | Ravi    |   1004 |  60000 |
+|  2005 | Rani    |   1007 |  70000 |
+|  2006 | John    |   1003 |  55200 |
++-------+---------+--------+--------+
+
+10. What is the salary of John?
+
+55200
+

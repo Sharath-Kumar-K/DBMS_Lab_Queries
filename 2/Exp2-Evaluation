@@ -1,0 +1,94 @@
+1. Insert a new record into your table. with following values in the same order of the table attributes i.e . 2006 Ali Calicut 80000 Network (empNo empName empAddress salary dept)
+
+insert into employee (empNo, empName, empAddress, salary, dept) values (2006, "Ali", "Calicut", 80000, "Network");
+
++-------+---------+------------+--------+--------------+--------------------------+
+| empNo | empName | empAddress | salary | dept         | title                    |
++-------+---------+------------+--------+--------------+--------------------------+
+|  2001 | Hari    | Palakkad   |  30000 | Research     | Junior Software Engineer |
+|  2002 | Devi    | Kasaragod  |  40000 | Network      | Junior Software Engineer |
+|  2003 | Gupta   | Kannur     |  50000 | System Admin | Junior Software Engineer |
+|  2004 | Ravi    | Calicut    |  60000 | HR           | Senior Software Engineer |
+|  2006 | Ali     | Calicut    |  80000 | Network      | Junior Software Engineer |
++-------+---------+------------+--------+--------------+--------------------------+
+
+
+2. Write the Query (1)(i.e. Calculate the total of the salary field )
+
+select sum(salary) from employee;
+
++-------------+
+| sum(salary) |
++-------------+
+|      260000 |
++-------------+
+
+
+3. Write the SQL Query (2) (i.e. List the count of employees who have salary less than 50000)
+
+select count(*) from employee where salary < 50000;
+
++----------+
+| count(*) |
++----------+
+|        2 |
++----------+
+
+4. Write the SQL Query to Find the employee name and department name of employee having maximum salary
+
+select empName, dept from employee where salary = (select max(salary) from employee);
+
++---------+---------+
+| empName | dept    |
++---------+---------+
+| Ali     | Network |
++---------+---------+
+
+5. Write the SQL Query to Add a new field projNo to the employee table with a default value 101
+
+alter table employee add column projNo int default 101;
+
++-------+---------+------------+--------+--------------+--------------------------+--------+
+| empNo | empName | empAddress | salary | dept         | title                    | projNo |
++-------+---------+------------+--------+--------------+--------------------------+--------+
+|  2001 | Hari    | Palakkad   |  30000 | Research     | Junior Software Engineer |    101 |
+|  2002 | Devi    | Kasaragod  |  40000 | Network      | Junior Software Engineer |    101 |
+|  2003 | Gupta   | Kannur     |  50000 | System Admin | Junior Software Engineer |    101 |
+|  2004 | Ravi    | Calicut    |  60000 | HR           | Senior Software Engineer |    101 |
+|  2006 | Ali     | Calicut    |  80000 | Network      | Junior Software Engineer |    101 |
++-------+---------+------------+--------+--------------+--------------------------+--------+
+
+6. Write SQL query for following (For each department with at-least two employees, retrieve average salary, no of employees and department name)
+
+
+
+7. Write the SQL Query to Update the projNo to 105 and department to Network for the employee whose employee number is 2004
+
+update employee set projNo = 105, dept = 'Network' where empNo = 2004;
+
++-------+---------+------------+--------+--------------+--------------------------+--------+
+| empNo | empName | empAddress | salary | dept         | title                    | projNo |
++-------+---------+------------+--------+--------------+--------------------------+--------+
+|  2001 | Hari    | Palakkad   |  30000 | Research     | Junior Software Engineer |    101 |
+|  2002 | Devi    | Kasaragod  |  40000 | Network      | Junior Software Engineer |    101 |
+|  2003 | Gupta   | Kannur     |  50000 | System Admin | Junior Software Engineer |    101 |
+|  2004 | Ravi    | Calicut    |  60000 | Network      | Senior Software Engineer |    105 |
+|  2006 | Ali     | Calicut    |  80000 | Network      | Junior Software Engineer |    101 |
++-------+---------+------------+--------+--------------+--------------------------+--------+
+
+8. Delete the employee record of employee whose name contains a substring pt
+
+delete from employee where empName LIKE "%pt%";
+
++-------+---------+------------+--------+----------+--------------------------+--------+
+| empNo | empName | empAddress | salary | dept     | title                    | projNo |
++-------+---------+------------+--------+----------+--------------------------+--------+
+|  2001 | Hari    | Palakkad   |  30000 | Research | Junior Software Engineer |    101 |
+|  2002 | Devi    | Kasaragod  |  40000 | Network  | Junior Software Engineer |    101 |
+|  2004 | Ravi    | Calicut    |  60000 | Network  | Senior Software Engineer |    105 |
+|  2006 | Ali     | Calicut    |  80000 | Network  | Junior Software Engineer |    101 |
++-------+---------+------------+--------+----------+--------------------------+--------+
+
+
+
+

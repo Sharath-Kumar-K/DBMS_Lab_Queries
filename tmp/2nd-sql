@@ -1,0 +1,12 @@
+Queries
+
+1.select sum(salary) as total_salary from Employee;
+2.select count(*) from Employee where salary<50000;
+3.select * from Employee where salary=(select max(salary) from Employee);
+4.ALTER TABLE Employee ADD COLUMN title varchar(40) NOT NULL DEFAULT 'junior software engineer';
+ describe Employee;
+ select * from Employee;
+5.update Employee set title= 'senior software engineer' where empNo=2004;
+select * from Employee;
+6.delete from Employee where empNo=2005;
+select * from Employee;

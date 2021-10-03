@@ -1,0 +1,284 @@
+create database studentDB;
+use studentDB;
+
+
+create table student(
+admNo int(3),
+name varchar(30) NOT NULL,
+dept char(3) not null,
+addr varchar(50) NOT NULL,
+mark INT,
+primary key (admNo)
+);
+
+
+insert into student values(100,'Hari','cse','Kasaragod',60);
+insert into student values(103,'Ali','it','Calicut',75);
+insert into student values(101,'Devi','cse','Kasaragod',55);
+insert into student values(104,'Rani','ece','Kannur',98);
+insert into student values(102,'Sam','it','Kannur',77);
+insert into student values(105,'Raj','me','Palakkad',77);
+
+
+select * from student;
+select name from student;
+select name,admno from student;
+select name from student where mark>75;
+select admNo from student where name='Hari';
+select admNo from student where name<>'Hari';
+select name from student where mark>90 or mark<60;
+select name from student where addr='Kasaragod' or addr='Kannur';
+select name from student where addr='Kannur' and dept='ece';
+select name,dept from student order by dept;
+select name,dept from student order by dept desc;
+
+
+
+update student set name='Raju' where admNo=105;
+
+
+select name,mark from student where mark between 75 and 99;
+
+
+select name,dept from student where name LIKE 'R%';
+select name,dept from student where name LIKE '%i';
+select name,dept from student where name LIKE 'Ra%';
+select name,dept from student where name LIKE 'Ra_';
+
+
+select distinct mark from student;
+select sum(mark) from student;
+select max(mark) from student;
+select min(mark) from student;
+select avg(mark) from student;
+select count(*) from student;
+select count(admNo) from student;
+
+
+select name,dept from student where mark = (select max(mark) from student);
+select dept,count(*) from student group by dept;
+
+
+select dept,count(*) from student group by dept having count(*)>=2;
+
+
+ALTER TABLE student ADD COLUMN id int default 1;
+describe student;
+select * from student;
+insert into student(admNo,name,dept,addr,mark) values(106,'John','me','Calicut',71);
+insert into student values(107,'Angel','ce','Calicut',72,2);
+ALTER TABLE student ALTER COLUMN id DROP DEFAULT;
+describe student;
+insert into student(admNo,name,dept,addr,mark) values(108,'Li','cse','Calicut',74);
+
+
+ALTER TABLE student DROP COLUMN id;
+delete from student where admNo=106;
+delete from student where admNo=107;
+
+
+select avg(mark) from student;
+select avg(mark) as averageMarks from student;
+
+
+select name, admno from student;
+select student.name, student.admno from student;
+select name as studentName,admno as AdmissionNumber from student;
+select std.name ,std.admno from student as std;
+select name as studentName,admno as AdmissionNumber from student as std where std.admno=105;
+
+
+
+create table suppliers(
+supplier_id int primary key,
+supplier_name varchar(30) NOT NULL
+);
+
+
+create table orders(
+order_id int primary key,
+supplier_id int NOT NULL,
+order_date date NOT NULL
+);
+
+
+insert into suppliers values(100,"IBM");
+insert into suppliers values(101,"HP");
+insert into suppliers values(102,"Microsoft");
+insert into suppliers values(103,"NVIDIA");
+
+
+insert into suppliers values(100,"IBM"),(101,"HP"),(102,"Microsoft"),(103,"NVIDIA");
+
+
+insert into orders values(201,100,"2021-05-13");
+insert into orders values(202,101,"2021-05-14");
+insert into orders values(203,104,"20210515");
+
+
+SELECT suppliers.supplier_id, supplier_name, order_date
+FROM suppliers INNER JOIN orders
+ON suppliers.supplier_id = orders.supplier_id;
+
+
+SELECT suppliers.supplier_id, supplier_name, order_date FROM suppliers, orders where  suppliers.supplier_id = orders.supplier_id;
+
+
+SELECT suppliers.supplier_id, supplier_name, order_date
+FROM suppliers LEFT OUTER JOIN orders
+ON suppliers.supplier_id = orders.supplier_id;
+
+
+SELECT order_id, order_date, suppliers.supplier_name
+FROM suppliers RIGHT OUTER JOIN orders
+ON suppliers.supplier_id = orders.supplier_id;
+
+
+create table orders(
+order_id int primary key,
+supplier_id int NOT NULL,
+order_date date NOT NULL,
+FOREIGN KEY(supplier_id) REFERENCES suppliers(supplier_id)
+);
+
+select suppliers.supplier_id from suppliers where suppliers.supplier_id IN (select orders.supplier_id from orders);
+
+select suppliers.supplier_id from suppliers where suppliers.supplier_id NOT IN (select orders.supplier_id from orders);
+
+select suppliers.supplier_id from suppliers union select orders.supplier_id from orders;
+select suppliers.supplier_id from suppliers union all select orders.supplier_id from orders;
+
+
+SELECT name, mark FROM student WHERE mark > ALL (SELECT mark FROM student WHERE addr='Kasaragod');
+
+
+select name, (mark*100)/100 as percentage from student;
+
+
+CREATE VIEW studentV1 AS SELECT admNo,name,dept,addr FROM student;
+CREATE VIEW studentV2 AS SELECT admNo,name,dept,mark FROM student;
+
+
+create table table1(
+var1 int(3) NOT NULL,
+var2 int(3) NOT NULL,
+sum int(3) NULL
+);
+
+Create trigger updateSum
+Before insert
+On table1
+For each row
+Set new.sum=new.var1+new.var2;
+
+
+insert into table1 values(3,6,null);
+select * from table1;
+
+
+create table table2(
+var1 int(3) NOT NULL,
+var2 int(3) NOT NULL,
+sum int(3) NULL
+);
+
+
+Create trigger updateTable2
+After delete
+On table1
+For each row
+insert into table2 values(old.var1,old.var2,old.sum);
+
+
+select * from table2;
+delete from table1 where var1=3;
+select * from table1;
+select * from table2;
+
+
+create table table3(
+var int NOT NULL,
+sum int NULL
+);
+
+
+DELIMITER //
+Create trigger updateSum
+Before update
+On table3
+For each row
+begin
+if(new.var>old.var) then
+Set new.sum=old.sum+new.var;
+end if;
+END //
+DELIMITER ;
+
+
+insert into table3 values(3,3);
+
+
+update table3 set var=5 where var=3;
+select * from table3;
+update table3 set var=2 where var=5;
+select * from table3;
+
+
+drop procedure GetNameByID;
+DELIMITER //
+CREATE PROCEDURE GetNameByID(IN employeeId int(4))
+BEGIN
+SELECT * FROM employee WHERE empNo = employeeId;
+END //
+DELIMITER ;
+call GetNameByID(2001);
+
+
+drop procedure CountByDept;
+DELIMITER //
+CREATE PROCEDURE CountByDept(IN deptName VARCHAR(25),OUT total INT)
+BEGIN
+SELECT count(empNo) INTO total FROM employee WHERE dept = deptName;
+END //
+DELIMITER ;
+call CountByDept('HR',@total);
+select @total;
+
+
+drop procedure CountByDept2;
+DELIMITER //
+CREATE PROCEDURE CountByDept2(IN deptName VARCHAR(25),OUT total INT)
+BEGIN
+SELECT count(empNo) AS total FROM employee WHERE dept = deptName;
+END //
+DELIMITER ;
+call CountByDept2('HR',@total);
+call CountByDept2('Network',@total);
+
+
+DELIMITER //
+CREATE PROCEDURE set_counter(INOUT count INT(4),IN inc INT(4))
+BEGIN
+SET count = count + inc;
+END //
+DELIMITER ;
+SET @counter = 1;
+CALL set_counter(@counter,1); -- 2
+CALL set_counter(@counter,1); -- 3
+CALL set_counter(@counter,5); -- 8
+SELECT @counter; -- 8
+
+
+drop FUNCTION countByDeptFn;
+DELIMITER //
+CREATE FUNCTION countByDeptFn(deptName VARCHAR(25)) RETURNS int DETERMINISTIC
+BEGIN
+DECLARE total INT;
+SELECT count(empNo) into total FROM employee WHERE dept = deptName;
+RETURN total;
+END //
+DELIMITER ;
+select countByDeptFn('HR') as EmpCount;
+
+
+

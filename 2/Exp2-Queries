@@ -1,0 +1,101 @@
+2. Create an Employee table for the following fields
+(Empno, Empname, Empaddress, salary, dept)
+i. Calculate the total of the salary field
+ii. List the count of employees who have salary less than 50000
+iii. Find the details of employee having maximum salary
+iv. Add a new field title to the employee table with a default value as junior software engineer
+v. Update the title of employee whose employee number 2004 to "Senor software engineer"
+vi. Delete the employee record of employee whose employee number is 2005
+
+TEST CASE
+
+empNo empName empAddress salary dept
+2001 Hari Palakkad 30000 Research
+2002 Devi Kasaragod 40000 Network
+2003 Gupta Kannur 50000 System Admin
+2004 Ravi Calicut 60000 HR
+2005 Rani Calicut 70000 HR
+
+
+ANSWER
+------
+
+create table employee(
+empNo int(4),
+empName varchar(30) NOT NULL,
+empAddress varchar(50) NOT NULL,
+salary int NOT NULL,
+dept varchar(20),
+PRIMARY KEY (empNo)
+);
+
+insert into employee (empNo, empName, empAddress, salary, dept) values (2001, "Hari", "Palakkad", 30000, "Research"), 
+(2002, "Devi", "Kasaragod", 40000, "Network"), 
+(2003, "Gupta", "Kannur", 50000, "System Admin"), 
+(2004, "Ravi", "Calicut", 60000, "HR"), 
+(2005, "Rani", "Calicut", 70000, "HR");
+
+
+i. Calculate the total of the salary field
+
+* select sum(salary) from employee;
+
+250000
+
+
+ii. List the count of employees who have salary less than 50000
+
+* select count(*) from employee where salary < 50000;
+
+2
+
+
+iii. Find the details of employee having maximum salary
+
+* select * from employee where salary = (select max(salary) from employee);
+
+|  2005 | Rani    | Calicut    |  70000 | HR   |
+
+
+iv. Add a new field title to the employee table with a default value as junior software engineer
+
+* alter table employee add column title varchar(30) default "Junior Software Engineer";
+
++-------+---------+------------+--------+--------------+--------------------------+
+| empNo | empName | empAddress | salary | dept         | title                    |
++-------+---------+------------+--------+--------------+--------------------------+
+|  2001 | Hari    | Palakkad   |  30000 | Research     | Junior Software Engineer |
+|  2002 | Devi    | Kasaragod  |  40000 | Network      | Junior Software Engineer |
+|  2003 | Gupta   | Kannur     |  50000 | System Admin | Junior Software Engineer |
+|  2004 | Ravi    | Calicut    |  60000 | HR           | Junior Software Engineer |
+|  2005 | Rani    | Calicut    |  70000 | HR           | Junior Software Engineer |
++-------+---------+------------+--------+--------------+--------------------------+
+
+v. Update the title of employee whose employee number 2004 to "Senor software engineer"
+
+* update employee set title = "Senior Software Engineer" where empNo = 2004;
+
++-------+---------+------------+--------+--------------+--------------------------+
+| empNo | empName | empAddress | salary | dept         | title                    |
++-------+---------+------------+--------+--------------+--------------------------+
+|  2001 | Hari    | Palakkad   |  30000 | Research     | Junior Software Engineer |
+|  2002 | Devi    | Kasaragod  |  40000 | Network      | Junior Software Engineer |
+|  2003 | Gupta   | Kannur     |  50000 | System Admin | Junior Software Engineer |
+|  2004 | Ravi    | Calicut    |  60000 | HR           | Senior Software Engineer |
+|  2005 | Rani    | Calicut    |  70000 | HR           | Junior Software Engineer |
++-------+---------+------------+--------+--------------+--------------------------+
+
+vi. Delete the employee record of employee whose employee number is 2005
+
+* delete from employee where empNo=2005;
+
++-------+---------+------------+--------+--------------+--------------------------+
+| empNo | empName | empAddress | salary | dept         | title                    |
++-------+---------+------------+--------+--------------+--------------------------+
+|  2001 | Hari    | Palakkad   |  30000 | Research     | Junior Software Engineer |
+|  2002 | Devi    | Kasaragod  |  40000 | Network      | Junior Software Engineer |
+|  2003 | Gupta   | Kannur     |  50000 | System Admin | Junior Software Engineer |
+|  2004 | Ravi    | Calicut    |  60000 | HR           | Senior Software Engineer |
++-------+---------+------------+--------+--------------+--------------------------+
+
+

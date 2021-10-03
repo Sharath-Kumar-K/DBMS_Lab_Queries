@@ -1,0 +1,24 @@
+DBMS Lab Evaluation - 5
+* Required
+Experiment No: 5
+Write the SQL Query (1)( Calculate the sales for a financial year 2016-17) *
+2 points
+Execute Query (1) (Calculate the sales for a financial year 2016-17). write result obtained for financial year 2016-17 *
+1 point
+Write the SQL Query (2) to Display publisher wise total price of books published, except for a particular publisher PHI *
+1 point
+Execute SQL Query (2) to Display publisher wise total price of books published, except for a particular publisher PHI. Write price of the book published by TMH *
+1 point
+Write the SQL Query to Find the publisher wise total price of books published. *
+1 point
+Write the SQL Query to display the name of the customer and title of the books purchased by them. *
+2 points
+Write the SQL Query to display the title of the books not purchased by any customers. *
+1 point
+Write the SQL Query to display the customer ids and the total quantity of books purchased by them in the decreasing order of total quantity purchased. *
+1 point
+Page 2 of 2
+Never submit passwords through Google Forms.
+This form was created inside of LBS College of Engineering, Kasaragod. Report Abuse
+Google Forms
+

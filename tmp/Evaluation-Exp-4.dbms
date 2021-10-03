@@ -1,0 +1,32 @@
+Experiment No: 4
+Write the SQL Query (1) (Create View student_info for student table(exp no:1) containing studentNo, studentName, department, address ) *
+1 point
+Write the SQL Query (2) (Create View student_mark for student table(exp no:1) containing studentNo, studentName, maths, physics, chemistry, cProgramming) *
+1 point
+Write the SQL Query (3) to Display the studentNo, studentName, totalMarks, address from student_info view and student_mark view without referring student table. *
+1 point
+Execute SQL Query (3) to Display the studentNo, studentName, totalMarks, address from student_info view and student_mark view without referring student table. Write the total mark of student 'Rani' *
+1 point
+Write the SQL Query (4) (Create a view (emp_dept) for exp no:3 containing employee name and department name. (NULL values are expected in the department name field for the employees having invalid department numbers).) *
+1 point
+Write SQL query (5) (Find the name of employees having invalid department numbers by referring the emp_dept view.) *
+SELECT empName FROM emp_dept WHERE deptName IS NULL;
+1 point
+ 
+This is a required question
+Write SQL query to find the number of employee in each department by referring the emp_dept view. *
+2 points
+Write the SQL command to delete a view studentInfo *
+Assume that you have already created a view studentInfo
+1 point
+Can we insert & delete rows into a View? (Select the most suitable answer.) *
+1 point
+Rows of data can be deleted but can not inserted
+Rows of data can be inserted but can not deleted
+Yes
+No
+Page 2 of 2
+Never submit passwords through Google Forms.
+This form was created inside of LBS College of Engineering, Kasaragod. Report Abuse
+Google Forms
+

@@ -1,0 +1,133 @@
+
+
+CREATE DATABASE BookStoreDB;
+
+Customer
+--------
+cust_id name cust_phone
+100 hari 12345
+101 john 23456
+102 ali 34567
+
+
+CREATE TABLE Customer(
+Cust_id CHAR(3) PRIMARY KEY,
+Cust_name VARCHAR(25) NOT NULL,
+Cust_phone CHAR(10) NOT NULL,
+);
+
+Book
+-----
+book_id title authorname unit_price publisher
+2001 DS Samantha 400 PHI
+2002 CPGM Samantha 300 PHI
+2003 DBMS Navathe 500 TMH
+2004 DC Forouzan 600 TMH
+2005 CN stallings 500 Pearson
+2006 python Lambert 200 Pearson
+
+
+CREATE TABLE Book (
+Book_id int NOT NULL PRIMARY KEY,
+Title varchar(15) NOT NULL,
+Authorname varchar(20),
+Unit_price int NOT NULL,
+Publisher varchar(20)
+);
+
+Sales
+-----
+sales
+cust_id book_id order_date quantity
+100 2001 20170102 3
+100 2002 20160402 4
+102 2006 20180102 2
+101 2005 20170502 1
+
+
+CREATE TABLE Sales(
+Cust_id int NOT NULL PRIMARY KEY,
+Book_id,
+Order_date,
+Quantity
+);
+
+
+
+============================================================
+
+
+
+
+
+
+create table Customer (
+Cust_id int NOT NULL primary key ,
+Cust_name char(20) NOT NULL,
+Cust_phone int (10) NOT NULL
+
+);
+
+insert into Customer values ( 100, 'hari',12345);
+insert into Customer values ( 101, 'john',23456);
+insert into Customer values ( 102, 'ali',34567);
+
+create table Book (
+Book_id int NOT NULL primary key ,
+Title varchar(20) NOT NULL ,
+Authorname char(20) NOT NULL ,
+Unit_price int (5) NOT NULL,
+Publisher varchar (10) NOT NULL
+
+);
+
+
+insert into Book values (2001,'DS','Samantha',400,'PHI');
+insert into Book values (2002,'CPGM','Samantha',300,'PHI');
+insert into Book values (2003,'DBMS','Navathe',500,'TMH');
+insert into Book values (2004,'DC','Forouzan',600,'TMH');
+insert into Book values (2005,'CN','stallings',500,'Pearson');
+insert into Book values (2006,'python','Lambert',200,'Pearson');
+
+
+create table Sales (
+Cust_id int NOT NULL ,
+Book_id int NOT NULL ,
+Order_date date NOT NULL,
+Quantity int NOT NULL 
+
+ );
+insert into Sales values (100,2001,20170102,3);
+insert into Sales values (100,2002,20160402,4);
+insert into Sales values (102,2006,20180102,2);
+insert into Sales values (101,2005,20170502,1);
+
+
+
+
+query 1 
+
+ a. Calculate the sales for a financial year 2016-17? (Make use of key constraints)
+
+
+select sum( sales.quantity * book.unit_price) as total_price from sales INNER JOIN book ON sales.book_id = book.book_id where sales.order_date between 20160101 and 20171231;
+
+
+
+
+query 2
+
+
+b. Display publisher wise total price of books published, except for a particular publisher PHI
+
+ select publisher , sum(unit_price) as total_price from book where publisher != "PHP" group by publisher;
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

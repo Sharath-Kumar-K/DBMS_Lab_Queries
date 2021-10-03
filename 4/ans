@@ -1,0 +1,11 @@
+insert into (studentNo, studentName, maths, physics, chemistry, cProgramming, department, address) values (106, "VishnuRaj", 65, 79, 50, 47, "ME", "EKM"); 
+
+select studentno, studentname from student where cProgramming < 50 order by cProgramming DESC;
+
+102
+
+select studentno, studentname from student order by department desc, studentName asc; 
+
+103
+
+

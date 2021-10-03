@@ -1,0 +1,206 @@
+
+ur MariaDB connection id is 31
+Server version: 10.5.9-MariaDB-1 Debian buildd-unstable
+ 
+ Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+  
+  Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+   
+   MariaDB [(none)]> create database a;
+   Query OK, 1 row affected (0.001 sec)
+    
+    MariaDB [(none)]> create table student(
+        -> studentNo int(4) primary key,
+            -> studentName varchar(20) NOT NULL,
+                -> maths int,
+                    -> physics int,
+                        -> chemistry int,
+                            -> cProgramming int,
+                                -> department varchar(3),
+                                    -> address varchar(50)
+                                        -> );
+    ERROR 1046 (3D000): No database selected
+    MariaDB [(none)]> use a
+    Database changed
+    MariaDB [a]> create table student( studentNo int(4) primary key, studentName varchar(20) NOT NULL, maths int, physics int, chemistry int, cProgramming int, department varchar(3), address varchar(50) );
+    Query OK, 0 rows affected (0.011 sec)
+     
+     MariaDB [a]> describe student;
+     +--------------+-------------+------+-----+---------+-------+
+     | Field        | Type        | Null | Key | Default | Extra |
+     +--------------+-------------+------+-----+---------+-------+
+     | studentNo    | int(4)      | NO   | PRI | NULL    |       |
+     | studentName  | varchar(20) | NO   |     | NULL    |       |
+     | maths        | int(11)     | YES  |     | NULL    |       |
+     | physics      | int(11)     | YES  |     | NULL    |       |
+     | chemistry    | int(11)     | YES  |     | NULL    |       |
+     | cProgramming | int(11)     | YES  |     | NULL    |       |
+     | department   | varchar(3)  | YES  |     | NULL    |       |
+     | address      | varchar(50) | YES  |     | NULL    |       |
+     +--------------+-------------+------+-----+---------+-------+
+     8 rows in set (0.002 sec)
+      
+      MariaDB [a]> insert into student values(100, "Hari", 50, 60, 45, 75, "CSE", "Kasaragod"), (101, "Devi", 60, 55, 78, 40, "CSE", "Kasar
+          "> agod"), (102, "Sam", 45, 77, 88, 45, "IT", "Kannur"), (103, "SreeHari", 90, 75, 77, 60, "IT", "Calicut"), (104, "Rani",
+              -> 91, 98, 89, 52, "ECE", "Kannur"), (105, "Raj", 88, 77, 67, 48, "CSE", "Palakkad");
+              Query OK, 6 rows affected (0.004 sec)
+              Records: 6  Duplicates: 0  Warnings: 0
+               
+               MariaDB [a]> select studentNo, studentName, cProgramming from student where cProgramming < 50 order by cProgramming asc;
+               +-----------+-------------+--------------+
+               | studentNo | studentName | cProgramming |
+               +-----------+-------------+--------------+
+               |       101 | Devi        |           40 |
+               |       102 | Sam         |           45 |
+               |       105 | Raj         |           48 |
+               +-----------+-------------+--------------+
+               3 rows in set (0.001 sec)
+                
+                MariaDB [a]> select studentNo, studentName, department from student order by department desc, studentName asc;
+                +-----------+-------------+------------+
+                | studentNo | studentName | department |
+                +-----------+-------------+------------+
+                |       102 | Sam         | IT         |
+                |       103 | SreeHari    | IT         |
+                |       104 | Rani        | ECE        |
+                |       101 | Devi        | CSE        |
+                |       100 | Hari        | CSE        |
+                |       105 | Raj         | CSE        |
+                +-----------+-------------+------------+
+                6 rows in set (0.001 sec)
+                 
+                 MariaDB [a]> select studentName from student where studentName like 'S%';
+                 +-------------+
+                 | studentName |
+                 +-------------+
+                 | Sam         |
+                 | SreeHari    |
+                 +-------------+
+                 2 rows in set (0.001 sec)
+                  
+                  MariaDB [a]> select studentName, physics from student where physics < (select avg(physics) from student);
+                  +-------------+---------+
+                  | studentName | physics |
+                  +-------------+---------+
+                  | Hari        |      60 |
+                  | Devi        |      55 |
+                  +-------------+---------+
+                  2 rows in set (0.001 sec)
+                   
+                   MariaDB [a]> select department, count(*), avg(maths)  from student group by department;
+                   +------------+----------+------------+
+                   | department | count(*) | avg(maths) |
+                   +------------+----------+------------+
+                   | CSE        |        3 |    66.0000 |
+                   | ECE        |        1 |    91.0000 |
+                   | IT         |        2 |    67.5000 |
+                   +------------+----------+------------+
+                   3 rows in set (0.001 sec)
+                    
+                    MariaDB [a]> select count(*), physics from student where physics between 70 and 80;
+                    +----------+---------+
+                    | count(*) | physics |
+                    +----------+---------+
+                    |        3 |      77 |
+                    +----------+---------+
+                    1 row in set (0.001 sec)
+                     
+                     MariaDB [a]> drop table student;
+                     Query OK, 0 rows affected (0.006 sec)
+                      
+                      MariaDB [a]> \q
+                      Bye
+                      sharath@Sharath-Kumar-K:~$ mysql -usharath -p
+                      Enter password:
+                      Welcome to the MariaDB monitor.  Commands end with ; or \g.
+                      Your MariaDB connection id is 32
+                      Server version: 10.5.9-MariaDB-1 Debian buildd-unstable
+                       
+                       Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+                        
+                        Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+                         
+                         MariaDB [(none)]>
+                         MariaDB [(none)]> delete database a;
+                         ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'database a' at line 1
+                         MariaDB [(none)]> show databases;
+                         +--------------------+
+                         | Database           |
+                         +--------------------+
+                         | a                  |
+                         | companyDB          |
+                         | information_schema |
+                         | mysql              |
+                         | performance_schema |
+                         | studentDB          |
+                         +--------------------+
+                         6 rows in set (0.001 sec)
+                          
+                          MariaDB [(none)]> delete database a
+                              -> ;
+                              ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'database a' at line 1
+                              MariaDB [(none)]> delete database a;
+                              ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'database a' at line 1
+                              MariaDB [(none)]> delete database A;
+                              ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'database A' at line 1
+                              MariaDB [(none)]> show databases;
+                              +--------------------+
+                              | Database           |
+                              +--------------------+
+                              | a                  |
+                              | companyDB          |
+                              | information_schema |
+                              | mysql              |
+                              | performance_schema |
+                              | studentDB          |
+                              +--------------------+
+                              6 rows in set (0.001 sec)
+                               
+                               MariaDB [(none)]> use database a;
+                               ERROR 1049 (42000): Unknown database 'database'
+                               MariaDB [(none)]> use a;
+                               Database changed
+                               MariaDB [a]> delete database A;
+                               ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'database A' at line 1
+                               MariaDB [a]> delete database a;
+                               ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'database a' at line 1
+                               MariaDB [a]> ^DBye
+                               sharath@Sharath-Kumar-K:~$ mysql -usharath -p
+                               Enter password:
+                               Welcome to the MariaDB monitor.  Commands end with ; or \g.
+                               Your MariaDB connection id is 33
+                               Server version: 10.5.9-MariaDB-1 Debian buildd-unstable
+                                
+                                Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+                                 
+                                 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+                                  
+                                  MariaDB [(none)]>
+                                  MariaDB [(none)]>
+                                  MariaDB [(none)]> delete database a;
+                                  ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'database a' at line 1
+                                  MariaDB [(none)]> delete a;
+                                  ERROR 1046 (3D000): No database selected
+                                  MariaDB [(none)]> delete database a;
+                                  ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'database a' at line 1
+                                  MariaDB [(none)]> drop database a;
+                                  Query OK, 0 rows affected (0.001 sec)
+                                   
+                                   MariaDB [(none)]>
+                                   MariaDB [(none)]>
+                                   MariaDB [(none)]>
+                                   MariaDB [(none)]> show databases;
+                                   +--------------------+
+                                   | Database           |
+                                   +--------------------+
+                                   | companyDB          |
+                                   | information_schema |
+                                   | mysql              |
+                                   | performance_schema |
+                                   | studentDB          |
+                                   +--------------------+
+                                   5 rows in set (0.001 sec)
+                                    
+                                    MariaDB [(none)]> ^DBye
+                                    sharath@Sharath-Kumar-K:~$ sudo service mysql stop
+

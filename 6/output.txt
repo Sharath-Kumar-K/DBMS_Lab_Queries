@@ -1,0 +1,119 @@
+┌──(sharath㉿Sharath-Kumar-K)-[~]
+└─$ sudo systemctl start mariadb.service 
+[sudo] password for sharath: 
+┌──(sharath㉿Sharath-Kumar-K)-[~]
+└─$ mysql -usharath -p
+Enter password: 
+ERROR 1045 (28000): Access denied for user 'sharath'@'localhost' (using password: NO)
+┌──(sharath㉿Sharath-Kumar-K)-[~]
+└─$ mysql -uroot -p
+Enter password: 
+ERROR 1698 (28000): Access denied for user 'root'@'localhost'
+┌──(sharath㉿Sharath-Kumar-K)-[~]
+└─$ sudo mysql -uroot -p
+Enter password: 
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 32
+Server version: 10.5.10-MariaDB-2 Debian 11
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database db
+    -> ;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [(none)]> use db
+Database changed
+MariaDB [db]> create table item(
+    -> item_id int(3),
+    -> item_desc varchar(50) not null,
+    -> qty_on_hand int(3) not null,
+    -> price int(3) not null,
+    -> category varchar(50) not null,
+    -> primary key(item_id)
+    -> );
+Query OK, 0 rows affected (0.011 sec)
+
+MariaDB [db]> insert into item values(100,'notebook',20,20,'book');
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [db]> insert into item values(101,'milkybar',30,5,'chocolate');
+Query OK, 1 row affected (0.000 sec)
+
+MariaDB [db]> insert into item values(102,'apple',50,10,'fruit');
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [db]> select * from item;
++---------+-----------+-------------+-------+-----------+
+| item_id | item_desc | qty_on_hand | price | category  |
++---------+-----------+-------------+-------+-----------+
+|     100 | notebook  |          20 |    20 | book      |
+|     101 | milkybar  |          30 |     5 | chocolate |
+|     102 | apple     |          50 |    10 | fruit     |
++---------+-----------+-------------+-------+-----------+
+3 rows in set (0.001 sec)
+
+MariaDB [db]> create table sale(
+    -> sale_id int(3),
+    -> item_id int(3),
+    -> qty_sold int(3),
+    -> price int(4) not null,
+    -> total int(4) not null,
+    -> primary key(sale_id),
+    -> foreign key(item_id) references item(item_id)
+    -> );
+Query OK, 0 rows affected (0.011 sec)
+
+MariaDB [db]> insert into sale values(200,100,10,20,200);
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [db]> insert into sale values(201,101,25,5,125);
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [db]> 
+MariaDB [db]> select * from sale;
++---------+---------+----------+-------+-------+
+| sale_id | item_id | qty_sold | price | total |
++---------+---------+----------+-------+-------+
+|     200 |     100 |       10 |    20 |   200 |
+|     201 |     101 |       25 |     5 |   125 |
++---------+---------+----------+-------+-------+
+2 rows in set (0.001 sec)
+
+MariaDB [db]> create trigger total_sales before insert on sale for each row set new.total=(new.qty_sold*new.price);
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [db]> insert into sale values(203,102,3,10,null);
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [db]> select * from sale;
++---------+---------+----------+-------+-------+
+| sale_id | item_id | qty_sold | price | total |
++---------+---------+----------+-------+-------+
+|     200 |     100 |       10 |    20 |   200 |
+|     201 |     101 |       25 |     5 |   125 |
+|     203 |     102 |        3 |    10 |    30 |
++---------+---------+----------+-------+-------+
+3 rows in set (0.001 sec)
+
+MariaDB [db]> create trigger stock after insert on sale for each row update item set qty_on_hand=qty_on_hand-new.qty_sold;
+Query OK, 0 rows affected (0.006 sec)                                                                                    
+                                                                                                                          
+MariaDB [db]> insert into sale values(204,100,5,20,null);                                                                   
+Query OK, 1 row affected (0.005 sec)                                                                                          
+                                                                                                                                  
+MariaDB [db]> select * from sale;
++---------+---------+----------+-------+-------+                                                                                        
+| sale_id | item_id | qty_sold | price | total |
++---------+---------+----------+-------+-------+
+|     200 |     100 |       10 |    20 |   200 |
+|     201 |     101 |       25 |     5 |   125 |
+|     203 |     102 |        3 |    10 |    30 |
+|     204 |     100 |        5 |    20 |   100 |
++---------+---------+----------+-------+-------+
+4 rows in set (0.001 sec)
+
+MariaDB [db]> 
+

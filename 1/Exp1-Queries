@@ -1,0 +1,120 @@
+1. Create Student table for the following fields, where studentno is the primary key:
+(studentno, studentname, maths, physics, chemistry, C-programming, Department, Address)
+i. List the studentno and studentname who is having marks less than 50 in C-programming in ascending order of their marks
+ii. List the studentno and studentname of same department, in descending order of their department and ascending order of their name
+iii. List the name of students whose name starts with ‘S’
+iv. Find the name of student who secured physics mark  less than the average of physics mark 
+v. List the number of students in each department along with their average mark in maths.
+vi. List the number of students who have secured marks between 70 and 80 in physics
+
+
+TEST CASE
+
+Student
+
+studentNo studentName maths physics chemistry cProgramming department address
+100 Hari 50 60 45 75 CSE Kasaragod
+101 Devi 60 55 78 40 CSE Kasaragod
+102 Sam 45 77 88 45 IT Kannur
+103 SreeHari 90 75 77 60 IT Calicut
+104 Rani 91 98 89 52 ECE Kannur
+105 Raj 88 77 67 48 CSE Palakkad
+
+ANSWER
+------
+
+create table student(
+studentNo int(4) primary key,
+studentName varchar(20) NOT NULL,
+maths int,
+physics int,
+chemistry int,
+cProgramming int,
+department varchar(3),
+address varchar(50)
+);
+
+insert into student values(100, "Hari", 50, 60, 45, 75, "CSE", "Kasaragod"),
+(101, "Devi", 60, 55, 78, 40, "CSE", "Kasaragod"),
+(102, "Sam", 45, 77, 88, 45, "IT", "Kannur"),
+(103, "SreeHari", 90, 75, 77, 60, "IT", "Calicut"),
+(104, "Rani", 91, 98, 89, 52, "ECE", "Kannur"),
+(105, "Raj", 88, 77, 67, 48, "CSE", "Palakkad");
+
+
+i. List the studentno and studentname who is having marks less than 50 in C-programming in ascending order of their marks
+
+* select studentNo, studentName, cProgramming from student where cProgramming < 50 order by cProgramming asc;
+
++-----------+-------------+--------------+
+| studentNo | studentName | cProgramming |
++-----------+-------------+--------------+
+|       101 | Devi        |           40 |
+|       102 | Sam         |           45 |
+|       105 | Raj         |           48 |
++-----------+-------------+--------------+
+
+
+ii. List the studentno and studentname of same department, in descending order of their department and ascending order of their name
+
+* select studentNo, studentName, department from student order by department desc, studentName asc;
+
++-----------+-------------+------------+
+| studentNo | studentName | department |
++-----------+-------------+------------+
+|       102 | Sam         | IT         |
+|       103 | SreeHari    | IT         |
+|       104 | Rani        | ECE        |
+|       101 | Devi        | CSE        |
+|       100 | Hari        | CSE        |
+|       105 | Raj         | CSE        |
++-----------+-------------+------------+
+
+
+iii. List the name of students whose name starts with ‘S’
+
+* select studentName from student where studentName like 'S%';
+
++-------------+
+| studentName |
++-------------+
+| Sam         |
+| SreeHari    |
++-------------+
+
+
+iv. Find the name of student who secured physics mark  less than the average of physics mark 
+
+* select studentName, physics from student where physics < (select avg(physics) from student);
+
++-------------+---------+
+| studentName | physics |
++-------------+---------+
+| Hari        |      60 |
+| Devi        |      55 |
++-------------+---------+
+
+
+v. List the number of students in each department along with their average mark in maths.
+
+* select department, count(*), avg(maths)  from student group by department;
+
++------------+----------+------------+
+| department | count(*) | avg(maths) |
++------------+----------+------------+
+| CSE        |        3 |    66.0000 |
+| ECE        |        1 |    91.0000 |
+| IT         |        2 |    67.5000 |
++------------+----------+------------+
+
+
+vi. List the number of students who have secured marks between 70 and 80 in physics
+
+* select count(*), physics from student where physics between 70 and 80;
+
++----------+---------+
+| count(*) | physics |
++----------+---------+
+|        3 |      77 |
++----------+---------+
+

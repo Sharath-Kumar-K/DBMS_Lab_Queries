@@ -1,0 +1,121 @@
+7. Implement a banking environment with following table, procedures and function.
+
+Create a table cust_details having attributes acc_no,acc_type,name,address,balance
+
+The account_type field will accept ONLY two values saving and current. 
+
+If the account type is saving then the minimum balance should be RS.1000 however there is no minimum balance condition for the current account.
+
+create two procedures
+    credit(acc_no,amount)
+    debit(acc_no,amount)
+
+create a function to get the balance details of a bank account.
+
+Display appropriate messages of every operations and errors.
+
+
+Test cases:
+
+cust_details
+acc_no acc_type name address balance
+1001 saving hari kasaragod 10000
+1002 saving sam kannur 20000
+1003 saving sree calicut 30000
+2001 current ali kannur 10000
+2002 current john kasaragod 20000
+
+select * from cust_details;
+select getBalance(1001) as currentBalance;
+
+call credit(1001,2000); 12000
+call credit(1004,1000); ERROR
+call debit(1001,1000); 11000
+call debit(1004,1000); ERROR
+call debit(1001,10500); ERROR
+call debit(1001,10000); 1000
+call debit(2001,10000); 0
+select getBalance(2001) as currentBalance;
+select * from cust_details;
+
+
+--------------
+
+CREATE DATABASE BankDB;
+USE BankDB;
+
+CREATE TABLE Cust_Details (
+Acc_No INT(4) UNIQUE PRIMARY KEY,
+Acc_Type VARCHAR(7) NOT NULL,
+Name VARCHAR(15) NOT NULL,
+Address VARCHAR(20), NOT NULL,
+Balance INT NOT NULL,
+);
+
+ALTER TABLE Cust_Details ADD CONSTRAINT
+Acc_Type CHECK ( Acc_Type = "saving" OR Acc_Type = "current" );
+
+ALTER TABLE Cust_Details ADD CONSTRAINT
+Balance CHECK ( Balance >= 1000 AND Acc_Type = "saving" );
+
+INSERT INTO Cust_Details ( Acc_No, Acc_Type, Name, Address, Balance ) VALUES
+( 1001, "saving", "hari", "kasaragod", 10000 ),
+( 1002, "saving", "sam", "kannur", 20000 ),
+( 1003, "saving", "sree", "calicut", 30000 ),
+( 2001, "current", "ali", "kannur", 10000 ),
+( 2002, "current", "john", "kasaragod", 20000 );
+
+DELIMITER //
+CREATE PROCEDURE credit( IN AccNo INT(4), IN Amount INT )
+BEGIN
+IF ( NOT EXIST ( SELECT * FROM Cust_Details WHERE Acc_No = AccNo ) ) THEN
+SELECT "Invalid Account Number" AS "";
+ELSE
+UPDATE TABLE Cust_Details SET Balance = ( Balance + Amount ) WHERE Acc_No = AccNo;
+END IF;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE debit( IN AccNo INT(4), IN Amount INT )
+BEGIN
+IF ( NOT EXIST ( SELECT * FROM Cust_Details WHERE Acc_No = AccNo ) ) THEN
+SELECT "Invalid Account Number" AS "";
+ELSE
+UPDATE TABLE Cust_Details SET Balance = ( Balance + Amount ) WHERE Acc_No = AccNo;
+END IF;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE FUNCTION getBalance( AccNo INT( 4 ) ) RETURNS INT DETERMINISTIC
+BEGIN
+DECLARE Bal INT;
+SELECT Balance INTO Bal FROM Csut_Details WHERE Acc_No = AccNo;
+RETURN Bal;
+END //
+DELIMITER ;
+
+
+
+
+
+DELIMITER //
+CREATE FUNCTION getAccountType( AccNo INT( 4 ) ) RETURNS VARCHAR(7) DETERMINISTIC
+BEGIN
+AccType VARCHAR(7)
+SELECT Acc_Type INTO AccType FROM Csut_Details WHERE Acc_No = AccNo;
+RETURN AccType;
+END //
+DELIMITER ;
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,23 @@
+
+1. Create Student table for the following fields, where studentno is the primary key:
+(studentno, studentname, maths, physics, chemistry, C-programming, Department, Address)
+i. List the studentno and studentname who is having marks less than 50 in C-programming in ascending order of their marks
+ii. List the studentno and studentname of same department, in descending order of their department and ascending order of their name
+iii. List the name of students whose name starts with ‘S’
+iv. Find the name of student who secured physics mark  less than the average of physics mark 
+v. List the number of students in each department along with their average mark in maths.
+vi. List the number of students who have secured marks between 70 and 80 in physics
+
+
+TEST CASE
+
+Student
+
+studentNo studentName maths physics chemistry cProgramming department address
+100 Hari 50 60 45 75 CSE Kasaragod
+101 Devi 60 55 78 40 CSE Kasaragod
+102 Sam 45 77 88 45 IT Kannur
+103 SreeHari 90 75 77 60 IT Calicut
+104 Rani 91 98 89 52 ECE Kannur
+105 Raj 88 77 67 48 CSE Palakkad
+

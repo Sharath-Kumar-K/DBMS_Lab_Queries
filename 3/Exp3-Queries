@@ -1,0 +1,199 @@
+3.  Consider the following tables namely emp and dept Their schemas are as follows
+dept (deptNO, deptName, deptLocation)
+emp (empId, empName, deptNo, salary)
+Where deptNo is the primary key in dept table and empId is primary key in emp table
+(Where dept_no in Employees is NOT a foreign key.)
+
+
+    i. Display the employee name along with their department name, (no need to diplay the employees with invalid department details)
+    ii. There are some invalid department numbers (present in employee table but are not existing  in department table), display all employee names  (along employee id and their department number)  part of such invalid department numbers .
+    iii. Display all the department numbers available with the department and employee tables avoiding duplicates
+    iv. Display department numbers and name of all the departments where no employee exists.
+    v. Display department number, employee id and employee name of employees working at location Cochin
+    vi. Display the details of those who draw the salary greater than the average salary of  employee’s from sales department
+    vii. The names of employees whose salary is greater than the salary of all the employees in department 1003 
+    viii.  Give all employees in the 'Sales' department a 20% raise in salary.
+
+emp
+empId empName deptNo salary
+2001 Hari        1006  30000
+2002 Devi 1002 40000
+2003 Gupta 1003 50000
+2004 Ravi 1004 60000
+2005 Rani 1007 70000
+2006 John 1003 40000
+
+
+dept
+deptNo deptName deptLocation
+1001 HR                  Calicut
+1002 Marketing Cochin
+1003 Sales          Trivandrum
+1004 Testing             Bangalore
+1005 Development        Bangalore
+
+
+ANSWER
+------
+
+DEPT
+----
+
+create table dept (
+deptNO int NOT NULL PRIMARY KEY,
+deptName varchar(15) NOT NULL,
+deptLocation varchar(15) NOT NULL
+);
+
+
+insert into dept (deptNO, deptName, deptLocation) values (1001, "HR", "Calicut"),
+(1002, "Marketing", "Cochin"),
+(1003, "Sales", "Trivandrum"),
+(1004, "Testing", "Bangalore"),
+(1005, "Development", "Bangalore");
+
++--------+-------------+--------------+
+| deptNO | deptName    | deptLocation |
++--------+-------------+--------------+
+|   1001 | HR          | Calicut      |
+|   1002 | Marketing   | Cochin       |
+|   1003 | Sales       | Trivandrum   |
+|   1004 | Testing     | Bangalore    |
+|   1005 | Development | Bangalore    |
++--------+-------------+--------------+
+
+EMP
+---
+
+create table emp (
+empId int NOT NULL PRIMARY KEY,
+empName varchar(20) NOT NULL,
+deptNo int NOT NULL,
+salary int NOT NULL
+);
+
+
+insert into emp (empId, empName, deptNo, salary) values (2001, "Hari", 1006, 30000),
+(2002, "Devi", 1002, 40000),
+(2003, "Gupta", 1003, 50000),
+(2004, "Ravi", 1004, 60000),
+(2005, "Rani", 1007, 70000),
+(2006, "John", 1003, 40000);
+
++-------+---------+--------+--------+
+| empId | empName | deptNo | salary |
++-------+---------+--------+--------+
+|  2001 | Hari    |   1006 |  30000 |
+|  2002 | Devi    |   1002 |  40000 |
+|  2003 | Gupta   |   1003 |  50000 |
+|  2004 | Ravi    |   1004 |  60000 |
+|  2005 | Rani    |   1007 |  70000 |
+|  2006 | John    |   1003 |  40000 |
++-------+---------+--------+--------+
+
+
+i. Display the employee name along with their department name, (no need to diplay the employees with invalid department details)
+
+* select empName, dept.deptName from emp INNER JOIN dept ON emp.deptNo = dept.deptNO;
+
++---------+-----------+
+| empName | deptName  |
++---------+-----------+
+| Devi    | Marketing |
+| Gupta   | Sales     |
+| Ravi    | Testing   |
+| John    | Sales     |
++---------+-----------+
+
+
+ii. There are some invalid department numbers (present in employee table but are not existing  in department table), display all employee names  (along employee id and their department number)  part of such invalid department numbers .
+
+* select empId, empName, deptNo from emp where deptNo NOT IN (select deptNO from dept);
+
++-------+---------+--------+
+| empId | empName | deptNo |
++-------+---------+--------+
+|  2001 | Hari    |   1006 |
+|  2005 | Rani    |   1007 |
++-------+---------+--------+
+
+
+iii. Display all the department numbers available with the department and employee tables avoiding duplicates
+
+* select deptNo from emp UNION select deptNO from dept;
+
++--------+
+| deptNo |
++--------+
+|   1006 |
+|   1002 |
+|   1003 |
+|   1004 |
+|   1007 |
+|   1001 |
+|   1005 |
++--------+
+
+
+iv.  Display department numbers and name of all the departments where no employee exists.
+
+* select deptName, deptNO from dept where deptNO NOT IN (select deptNo from emp);
+
++-------------+--------+
+| deptName    | deptNO |
++-------------+--------+
+| HR          |   1001 |
+| Development |   1005 |
++-------------+--------+
+
+v. Display department number, employee id and employee name of employees working at location Cochin
+
+* select deptno, empId, empName from emp where deptNo IN (select deptNO from dept where deptLocation = 'Cochin');
+
++--------+-------+---------+
+| deptno | empId | empName |
++--------+-------+---------+
+|   1002 |  2002 | Devi    |
++--------+-------+---------+
+
+vi. Display the details of those who draw the salary greater than the average salary of  employee’s from sales department
+
+* select * from emp where salary > (select avg(salary) from emp where deptNo = (select deptNO from dept where deptName = 'sales'));
+
++-------+---------+--------+--------+
+| empId | empName | deptNo | salary |
++-------+---------+--------+--------+
+|  2003 | Gupta   |   1003 |  50000 |
+|  2004 | Ravi    |   1004 |  60000 |
+|  2005 | Rani    |   1007 |  70000 |
++-------+---------+--------+--------+
+
+vii.  The names of employees whose salary is greater than the salary of all the employees in department 1003
+
+* select empName from emp where salary > (select max(salary) from emp where deptNo = 1003);
+
++---------+
+| empName |
++---------+
+| Ravi    |
+| Rani    |
++---------+
+
+viii. Give all employees in the 'Sales' department a 20% raise in salary.
+
+* update emp set salary = (salary + (salary * (20/100)))
+where deptNo = (select distinct deptNo from dept where deptName = 'Sales');
+
++-------+---------+--------+--------+
+| empId | empName | deptNo | salary |
++-------+---------+--------+--------+
+|  2001 | Hari    |   1006 |  30000 |
+|  2002 | Devi    |   1002 |  40000 |
+|  2003 | Gupta   |   1003 |  60000 |
+|  2004 | Ravi    |   1004 |  60000 |
+|  2005 | Rani    |   1007 |  70000 |
+|  2006 | John    |   1003 |  48000 |
++-------+---------+--------+--------+
+
+
+

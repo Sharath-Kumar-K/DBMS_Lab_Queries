@@ -1,0 +1,49 @@
+1. CREATE TABLE employee (name VARCHAR, id INTEGER)Which type of statement this is
+
+DDL
+
+
+2. Views can be created for ? (Select the most suitable answer.)
+
+One table 
+Many table
+Another view
+One table and Another view
+All of the above *
+
+3. To remove a relation (Along with relation definition and its contents) from an SQL database, we use the ______ command.
+
+DROP
+
+
+4. Which of the following creates a virtual relation for storing the query? (Select the most suitable answer.)
+
+View
+
+
+5. A relation R (A,B,C,D,E) and the dependency set F = {AB->CD, C->DE, A->F}. Find the normal form of above relation
+
+BCNF
+1NF
+2NF
+3NF
+
+
+
+6. Which of the following statements are TRUE about an SQL query - (P): An SQL query can contain a HAVING clause even if it does not a GROUP BY clause - (Q): An SQL query can contain a HAVING clause only if it has a GROUP BY clause - (R): All attributes used in the GROUP BY clause must appear in the SELECT clause - (S): Not all attributes used in the GROUP BY clause need to appear in the SELECT clause
+
+P and S
+
+
+
+7. A relation R(A,B,C,D,E,F,G) with FD set F = {A->BC, AB->DE, D->EF, F->A}. Find the number of candidate keys.
+
+1
+
+
+8. SELECT __________ FROM instructor WHERE dept name= ’Comp. Sci.’; Write the expression to find the mean of the salary ? (Assume that there exists an attribute salary in the instructor table)
+
+AVG(salary)
+
+
+
